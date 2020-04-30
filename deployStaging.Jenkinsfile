@@ -66,6 +66,26 @@ stage('DT send deploy event') {
         }
     }
 }
+    stage('DT create synthetic monitor') {
+      steps {
+        container("kubectl") {
+          script {
+            // Get IP of service
+            env.SERVICE_IP = sh(script: 'kubectl get svc ${APP_NAME} -n dev -o \'jsonpath={..status.loadBalancer.ingress..ip}\'', , returnStdout: true).trim()
+          }
+        }
+        container("curl") {
+          script {
+            def status = dt_createUpdateSyntheticTest (
+              testName : "simplenodeservice.${env.APP_NAME}",
+              url : "http://${SERVICE_IP}/items",
+              method : "GET",
+              location : "SYNTHETIC_LOCATION-312B5844D54E7596"
+            )
+          }
+        }
+      }
+    }
         stage('Run tests') {
             steps {
                 build job: "3. Test",
