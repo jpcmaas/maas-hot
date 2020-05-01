@@ -30,7 +30,8 @@ pipeline {
                             source : 'JMeter via Jenkins',
                             title : 'JMeter Performance Test',
                             customProperties : [
-                                [key: 'Script Name', value: "jmeter/simplenodeservice_load.jmx"] 
+                                [key: 'Script Name', value: "jmeter/simplenodeservice_load.jmx"], 
+                                [key: 'Test Owner', value: 'J-P Contreras']
                             ]
                         )
                     }
