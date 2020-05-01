@@ -27,8 +27,8 @@ pipeline {
                         def status = pushDynatraceInfoEvent (
                             tagRule : tagMatchRules,
                             description : 'Simplenode Service Performance Test',
-                            source : 'Jenkins',
-                            title : 'Performance Test',
+                            source : 'JMeter via Jenkins',
+                            title : 'JMeter Performance Test',
                             customProperties : [
                                 [key: 'Script Name', value: "jmeter/simplenodeservice_load.jmx"] 
                             ]
