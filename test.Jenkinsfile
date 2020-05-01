@@ -20,6 +20,24 @@ pipeline {
         label 'kubegit'
     }
     stages {
+        stage('DT send test start event') {
+            steps {
+                container("curl") {
+                    script {
+                        def status = pushDynatraceInfoEvent (
+                            tagRule : tagMatchRules,
+                            description : 'Simplenode Service Performance Test'
+                            source : "Jenkins",
+                            customProperties : [
+                                [key: 'Jenkins Build Number', value: "${env.BUILD_ID}"],
+                                [key: 'Git commit', value: "${env.GIT_COMMIT}"]
+                            ]
+                        )
+                    }
+                }
+            }
+        }
+        
         stage('Run performance test') {
             steps {
                 checkout scm
