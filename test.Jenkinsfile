@@ -20,7 +20,7 @@ pipeline {
         label 'kubegit'
     }
     stages {
-        stage('DT send test start event') {
+        stage('Send test start event') {
             steps {
                 container("curl") {
                     script {
@@ -28,7 +28,7 @@ pipeline {
                             tagRule : tagMatchRules,
                             description : 'Simplenode Service Performance Test',
                             source : 'JMeter via Jenkins',
-                            title : 'JMeter Performance Test',
+                            title : 'Start JMeter Performance Test',
                             customProperties : [
                                 [key: 'Script Name', value: "jmeter/simplenodeservice_load.jmx"], 
                                 [key: 'Test Owner', value: 'J-P Contreras']
@@ -60,6 +60,25 @@ pipeline {
                         currentBuild.result = 'FAILED'
                         error "Performance test in staging failed."
                     }
+                    }
+                }
+            }
+        }
+
+stage('Send test end event') {
+            steps {
+                container("curl") {
+                    script {
+                        def status = pushDynatraceInfoEvent (
+                            tagRule : tagMatchRules,
+                            description : 'Simplenode Service Performance Test',
+                            source : 'JMeter via Jenkins',
+                            title : 'End JMeter Performance Test',
+                            customProperties : [
+                                [key: 'Script Name', value: "jmeter/simplenodeservice_load.jmx"], 
+                                [key: 'Test Owner', value: 'J-P Contreras']
+                            ]
+                        )
                     }
                 }
             }
