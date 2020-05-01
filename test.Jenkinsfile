@@ -26,7 +26,7 @@ pipeline {
                     script {
                         def status = pushDynatraceInfoEvent (
                             tagRule : tagMatchRules,
-                            description : 'Simplenode Service Performance Test'
+                            description : 'Simplenode Service Performance Test',
                             source : 'Jenkins',
                             customProperties : [
                                 [key: 'Jenkins Build Number', value: "${env.BUILD_ID}"],
